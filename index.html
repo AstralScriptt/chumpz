@@ -44,23 +44,20 @@
     </div>
     <script src="rawcontent.js"></script>
     <script>
-        async function fetchJSON() {
+        function displayJSON() {
             const outputDiv = document.getElementById('jsonOutput');
             const errorDiv = document.getElementById('error');
             try {
-                const response = await fetch(rawContentURL);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! Status: ${response.status}`);
-                }
-                const data = await response.json();
-                outputDiv.textContent = JSON.stringify(data, null, 2);
+                // Assuming rawContent is defined in rawcontent.js
+                const formattedJSON = JSON.stringify(rawContent, null, 2);
+                outputDiv.textContent = formattedJSON;
                 errorDiv.textContent = '';
             } catch (error) {
                 outputDiv.textContent = '';
-                errorDiv.textContent = `Error: ${error.message}`;
+                errorDiv.textContent = `Error: Invalid JSON content - ${error.message}`;
             }
         }
-        window.onload = fetchJSON;
+        window.onload = displayJSON;
     </script>
 </body>
 </html>
