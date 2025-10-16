@@ -19,13 +19,15 @@
             box-shadow: 0 0 10px rgba(0,0,0,0.1);
         }
         #jsonOutput {
-            white-space: pre-wrap;
-            background-color: #f8f8f8;
+            white-space: pre;
+            background-color: #000;
+            color: #fff;
             padding: 15px;
             border: 1px solid #ddd;
             border-radius: 4px;
             min-height: 200px;
             overflow-x: auto;
+            font-family: monospace;
         }
         #error {
             color: red;
@@ -39,7 +41,7 @@
 <body>
     <div id="container">
         <h1>Raw JSON Viewer</h1>
-        <div id="jsonOutput">Loading...</div>
+        <div id="jsonOutput"></div>
         <div id="error"></div>
     </div>
     <script src="rawcontent.js"></script>
@@ -48,9 +50,7 @@
             const outputDiv = document.getElementById('jsonOutput');
             const errorDiv = document.getElementById('error');
             try {
-                // Assuming rawContent is defined in rawcontent.js
-                const formattedJSON = JSON.stringify(rawContent, null, 2);
-                outputDiv.textContent = formattedJSON;
+                outputDiv.textContent = JSON.stringify(rawContent);
                 errorDiv.textContent = '';
             } catch (error) {
                 outputDiv.textContent = '';
