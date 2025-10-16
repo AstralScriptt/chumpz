@@ -9,7 +9,7 @@
 
     body {
       font-family: "Poppins", sans-serif;
-      background: radial-gradient(circle at 20% 20%, #111, #0a0a0a);
+      background: radial-gradient(circle at 20% 20%, #0b0b0b, #000);
       color: #f1f1f1;
       display: flex;
       align-items: center;
@@ -19,24 +19,20 @@
     }
 
     .container {
-      background: linear-gradient(145deg, #141414, #1b1b1b);
+      background: linear-gradient(145deg, #111, #191919);
       padding: 30px;
       border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.7);
       width: 400px;
       text-align: center;
-      transition: all 0.4s ease;
-    }
-
-    .container:hover {
-      transform: scale(1.03);
+      animation: fadeIn 0.6s ease forwards;
     }
 
     h1 {
       color: #00ffd5;
-      font-size: 1.8rem;
+      font-size: 1.9rem;
       margin-bottom: 15px;
-      text-shadow: 0 0 8px #00ffd5;
+      text-shadow: 0 0 10px #00ffd5;
     }
 
     textarea {
@@ -55,7 +51,7 @@
 
     textarea:focus {
       border-color: #00ffaa;
-      box-shadow: 0 0 10px #00ffaa;
+      box-shadow: 0 0 8px #00ffaa;
     }
 
     button {
@@ -71,8 +67,8 @@
     }
 
     button:hover {
-      background: linear-gradient(90deg, #00ffaa, #00ffd5);
       transform: translateY(-2px);
+      filter: brightness(1.2);
     }
 
     .output {
@@ -88,56 +84,68 @@
       overflow-y: auto;
     }
 
-    .copy-btn {
+    .mode-toggle {
+      background: none;
+      border: 1px solid #00ffd5;
+      color: #00ffd5;
+      font-size: 13px;
       margin-top: 10px;
-      background: #00ffd5;
-      color: #000;
-      border: none;
       border-radius: 8px;
-      padding: 6px 12px;
+      padding: 5px 10px;
       cursor: pointer;
       transition: all 0.3s ease;
     }
 
-    .copy-btn:hover {
-      background: #00ffaa;
-      transform: translateY(-1px);
-    }
-
-    .fade {
-      animation: fadeIn 0.5s ease forwards;
+    .mode-toggle:hover {
+      background: #00ffd5;
+      color: #000;
     }
 
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(5px); }
+      from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
   </style>
 </head>
 <body>
-  <div class="container fade">
-    <h1>🌐 Hakiware URL Encoder</h1>
+  <div class="container">
+    <h1>🌐 Hakiware URL Tool</h1>
     <textarea id="input" placeholder="Paste text or URL here..."></textarea>
-    <button onclick="encodeURL()">Encode</button>
+    <button id="actionBtn" onclick="processURL()">Encode</button>
+    <button class="mode-toggle" onclick="toggleMode()">Switch to Decode</button>
     <div id="output" class="output"></div>
-    <button class="copy-btn" onclick="copyOutput()">Copy</button>
+    <button onclick="copyOutput()">Copy Output</button>
   </div>
 
   <script>
-    function encodeURL() {
-      const input = document.getElementById('input').value.trim();
-      const encoded = encodeURIComponent(input);
-      document.getElementById('output').textContent = encoded || '⚠️ Nothing to encode!';
+    let mode = "encode";
+
+    function processURL() {
+      const input = document.getElementById("input").value.trim();
+      let output = "";
+
+      if (!input) {
+        document.getElementById("output").textContent = "⚠️ Nothing to process!";
+        return;
+      }
+
+      output = mode === "encode" ? encodeURIComponent(input) : decodeURIComponent(input);
+      document.getElementById("output").textContent = output;
+    }
+
+    function toggleMode() {
+      mode = mode === "encode" ? "decode" : "encode";
+      document.getElementById("actionBtn").textContent = mode === "encode" ? "Encode" : "Decode";
+      document.querySelector(".mode-toggle").textContent =
+        mode === "encode" ? "Switch to Decode" : "Switch to Encode";
+      document.getElementById("output").textContent = "";
     }
 
     function copyOutput() {
-      const output = document.getElementById('output').textContent;
-      if (!output || output.startsWith('⚠️')) return;
+      const output = document.getElementById("output").textContent;
+      if (!output || output.startsWith("⚠️")) return;
       navigator.clipboard.writeText(output);
-      const btn = document.querySelector('.copy-btn');
-      const oldText = btn.textContent;
-      btn.textContent = '✅ Copied!';
-      setTimeout(() => (btn.textContent = oldText), 1200);
+      alert("✅ Copied to clipboard!");
     }
   </script>
 </body>
