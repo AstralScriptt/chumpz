@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Raw JSON Viewer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+        }
+        #container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        #jsonOutput {
+            white-space: pre-wrap;
+            background-color: #f8f8f8;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            min-height: 200px;
+            overflow-x: auto;
+        }
+        #error {
+            color: red;
+            margin-top: 10px;
+        }
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h1>Raw JSON Viewer</h1>
+        <div id="jsonOutput">Loading...</div>
+        <div id="error"></div>
+    </div>
+    <script src="rawcontent.js"></script>
+    <script>
+        async function fetchJSON() {
+            const outputDiv = document.getElementById('jsonOutput');
+            const errorDiv = document.getElementById('error');
+            try {
+                const response = await fetch(rawContentURL);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const data = await response.json();
+                outputDiv.textContent = JSON.stringify(data, null, 2);
+                errorDiv.textContent = '';
+            } catch (error) {
+                outputDiv.textContent = '';
+                errorDiv.textContent = `Error: ${error.message}`;
+            }
+        }
+        window.onload = fetchJSON;
+    </script>
+</body>
+</html>
